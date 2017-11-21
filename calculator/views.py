@@ -1,14 +1,24 @@
 from django.shortcuts import render
 from .forms import CalculatorForm
 from .subnet_calculator import *
+import json
 # Create your views here.
-
+from django.http import JsonResponse,HttpResponse
 
 def calculator(request):
-    if request.method == 'POST':
+    if request.method == 'GET' and 'network_class' in request.GET:
+        network_class = str(request.GET.get('network_class', None))
+        CLASS_CHOICES = (('Any','Any'),('A','A'),('B','B'),('C','C'))
+        form = CalculatorForm(create_subnet(network_class),CLASS_CHOICES)
+        form = str(form)
+        form = form.split('</tr>')[1].split('<td>')[1].split('</td>')[0].replace('name="subnet"','name="subnet" class="form-control"')
+
+        return HttpResponse(form)
+      
+    elif request.method == 'POST':
         network_class = request.POST['network_class']
-        form = CalculatorForm(create_subnet(network_class), request.POST)
-        if form.is_valid():
+        form = CalculatorForm(create_subnet(network_class),create_class(), request.POST)
+        if form.is_valid() and not request.POST['subnet'] == 'default':
             subnet_mask_req = request.POST['subnet']
             ip_address = request.POST['ip_address']
             subnet_mask = subnet_mask_req.split('/')[0]
@@ -37,8 +47,14 @@ def calculator(request):
                     'short': short, 'binary_id': binary_id,
                     'integer_id': integer_id, 'hex_id': hex_id,
                     }
-            form = CalculatorForm(create_subnet('Any'),initial={'ip_address':ip_address})    
+            form = CalculatorForm(create_subnet('default'),create_class())    
             return render(request, 'calculator.html', {'form': form, 'data': data})
-        return render(request, 'calculator.html', {'form': form})
-    form = CalculatorForm(create_subnet('Any'))
+       
+    form = CalculatorForm(create_subnet('default'),create_class())
+    return render(request, 'calculator.html', {'form': form})
+
+def change_subnet(request):
+    network_class = request.GET.get('network_class', None)
+    CLASS_CHOICES = (('Any','Any'),('A','A'),('B','B'),('C','C'))
+    form = CalculatorForm(create_subnet(network_class),CLASS_CHOICES)
     return render(request, 'calculator.html', {'form': form})
