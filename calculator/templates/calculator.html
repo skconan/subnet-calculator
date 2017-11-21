@@ -1,76 +1,129 @@
-{% extends 'template.html' %} {% load bootstrap %} {% block content %}
-{% block javascript %}
-
-{% endblock %}
+{% extends 'template.html' %} 
+{% load bootstrap %} 
+{% block content %} 
 <div class="container">
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
+            </br>            
             <h1>
                 <center>Subnet Calculator</center>
             </h1>
             </br>
-
+            {% if err.err_ip %}
+                <div class="alert alert-danger" role="alert">
+                    {{ err.err_ip }}
+                </div>
+            {% endif %}
+            {% if err.err_network_class %}
+                <div class="alert alert-danger" role="alert">
+                    {{ err.err_network_class }}
+                </div>
+            {% endif %}
             <form method='POST'>
                 {% csrf_token %} 
-               
-                    {{ form|bootstrap }}
-         
-               
+                {{ form|bootstrap }}
                 <button type="submit" class="btn btn-primary">Calculate</button>
             </form>
+            <br/> 
 
-        
-        <br/>
-        {% if data %}
-            <table class='table'>
+            {% if data %}
+            <table class='table table-striped'>
                 <tbody>
-                    <tr> <th width='50%'>IP Address</th> <td width='50%'> {{ data.ip_address }} </td> </tr>
-                    <tr> <th>Network Address</th> <td> {{ data.network_address }} </td> </tr>
-                    <tr> <th>Usable Host IP Range</th> <td> {{ data.host_ip_range }} </td> </tr>
-                    <tr> <th>Broadcast Address</th> <td> {{ data.broadcast_address }} </td> </tr>
-                    <tr> <th>Total Number of Hosts</th> <td> {{ data.number_of_host }} </td> </tr>
-                    <tr> <th>Number of Usable Hosts</th> <td> {{ data.number_of_usable_host }} </td> </tr>
-                    <tr> <th>Subnet Mask</th> <td> {{ data.subnet_mask }} </td> </tr>
-                    <tr> <th>Wildcard Mask</th> <td> {{ data.wildcard_mask }} </td> </tr>
-                    <tr> <th>Binary Subnet Mask</th> <td> {{ data.binary_subnet_mask }} </td> </tr>
-                    <tr> <th>IP Class</th> <td> {{ data.ip_class }} </td> </tr>
-                    <tr> <th>CIDR Notation</th> <td> {{ data.cidr_notation }} </td> </tr>
-                    <tr> <th>IP Type</th> <td> {{ data.ip_type }} </td> </tr>
-                    <tr> <th>Short</th> <td> {{ data.short }} </td> </tr>
-                    <tr> <th>Binary ID</th> <td> {{ data.binary_id }} </td> </tr>
-                    <tr> <th>Integer ID</th> <td> {{ data.integer_id }} </td> </tr>
-                    <tr> <th>Hex ID</th> <td> {{ data.hex_id }} </td> </tr>
+                    <tr>
+                        <th width='50%'>IP Address</th>
+                        <td width='50%'> {{ data.ip_address }} </td>
+                    </tr>
+                    <tr>
+                        <th>Network Address</th>
+                        <td> {{ data.network_address }} </td>
+                    </tr>
+                    <tr>
+                        <th>Usable Host IP Range</th>
+                        <td> {{ data.host_ip_range }} </td>
+                    </tr>
+                    <tr>
+                        <th>Broadcast Address</th>
+                        <td> {{ data.broadcast_address }} </td>
+                    </tr>
+                    <tr>
+                        <th>Total Number of Hosts</th>
+                        <td> {{ data.number_of_host }} </td>
+                    </tr>
+                    <tr>
+                        <th>Number of Usable Hosts</th>
+                        <td> {{ data.number_of_usable_host }} </td>
+                    </tr>
+                    <tr>
+                        <th>Subnet Mask</th>
+                        <td> {{ data.subnet_mask }} </td>
+                    </tr>
+                    <tr>
+                        <th>Wildcard Mask</th>
+                        <td> {{ data.wildcard_mask }} </td>
+                    </tr>
+                    <tr>
+                        <th>Binary Subnet Mask</th>
+                        <td> {{ data.binary_subnet_mask }} </td>
+                    </tr>
+                    <tr>
+                        <th>IP Address Class</th>
+                        <td> {{ data.ip_class }} </td>
+                    </tr>
+                    <tr>
+                        <th>CIDR Notation</th>
+                        <td> {{ data.cidr_notation }} </td>
+                    </tr>
+                    <tr>
+                        <th>IP Type</th>
+                        <td> {{ data.ip_type }} </td>
+                    </tr>
+                    <tr>
+                        <th>Short</th>
+                        <td> {{ data.short }} </td>
+                    </tr>
+                    <tr>
+                        <th>Binary ID</th>
+                        <td> {{ data.binary_id }} </td>
+                    </tr>
+                    <tr>
+                        <th>Integer ID</th>
+                        <td> {{ data.integer_id }} </td>
+                    </tr>
+                    <tr>
+                        <th>Hex ID</th>
+                        <td> {{ data.hex_id }} </td>
+                    </tr>
                 </tbody>
             </table>
-        {% endif %}
+            {% endif %}
+            <br/>          
+        <h5> <small style='color:#777;'>by Supakit Kriangkhajorn 5810500145 </small></h5>
         </div>
         <div class="col-md-3"></div>
     </div>
 </div>
 
-{% endblock %}
-{% block js %}
+{% endblock %} {% block js %}
 
 <script>
     $("#id_network_class").change(function () {
-      var network_class = $(this).val();
-      console.log(network_class);
-      $.ajax({
-        type:"GET",
-        url: '/',
-        data: {
-          'network_class': network_class
-        },
-        dataType: 'html',
-        success: function (data) {
-           console.log(data);
-            $('#id_subnet').replaceWith(data);
-        }
-          
-     }); 
+        var network_class = $(this).val();
+        console.log(network_class);
+        $.ajax({
+            type: "GET",
+            url: '/',
+            data: {
+                'network_class': network_class
+            },
+            dataType: 'html',
+            success: function (data) {
+                console.log(data);
+                $('#id_subnet').replaceWith(data);
+            }
 
-      
+        });
+
+
     });
-  </script>
-{% endblock %}
+</script> {% endblock %}
