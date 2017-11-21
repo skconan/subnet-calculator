@@ -49,7 +49,7 @@ class SubnetCalculation():
         self.network_address = self.get_network_address()
         self.broadcast_address = self.get_broadcast_address()
         self.cidr_notation = subnet_mask.split('/')[1]
-        self.short = self.ip_address + ' ' + self.cidr_notation
+        self.short = self.ip_address + ' /' + self.cidr_notation
         self.bin_id = self.get_bin_id()
         self.int_id = self.get_integer_id()
         self.no_host = self.get_total_number_of_host()
