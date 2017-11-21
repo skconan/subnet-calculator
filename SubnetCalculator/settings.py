@@ -25,7 +25,7 @@ SECRET_KEY = '9f3(u4js$5v2mmucw5v33ap5nh*6v^=v44#$0+7(d-lpc)=djk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://subnet-calculator.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['subnet-calculator.herokuapp.com','127.0.0.1']
 
 # Application definition
 
