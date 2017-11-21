@@ -19,5 +19,5 @@ from calculator import views as calculator_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^calculator/$', calculator_views.calculator, name='calculator'),
+    url(r'^$', calculator_views.calculator, name='calculator'),
 ]
