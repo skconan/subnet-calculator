@@ -1,4 +1,6 @@
 def create_subnet(network_class):
+    if network_class == 'default':
+        return (('default','Select a network class before subnet'),)
     subnet_class = {}
     subnet_tuple = ()
     subnet = 11111111111111111111111111111111
@@ -29,6 +31,10 @@ def create_subnet(network_class):
 
     return subnet_class[network_class]
 
+
+def create_class():
+    return (('default','Please Select a network class'),('Any','Any'),('A','A'),('B','B'),('C','C'),)
+    
 
 def ip_class_is(ip_address):
     ip = int(ip_address.split('.')[0])
